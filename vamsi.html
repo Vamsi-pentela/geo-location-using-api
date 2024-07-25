@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Info</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Enter your IP Address</h1>
+  <div class="input-container">
+    <input type="text" id="ipAddress" placeholder="Enter your IP address">
+    <button onclick="vamsi()" type="button" id="generateButton">Generate</button>
+  </div>
+  <div id="ipInfo">
+    <p>CONTINENT code: <span id="code"></span></p>
+    <p>CONTINENT name: <span id="name"></span></p>
+    <p>COUNTRY code: <span id="countrycode"></span></p>
+    <p>COUNTRY name: <span id="countryname"></span></p>
+    <p>COUNTRY capital: <span id="countrycapital"></span></p>
+    <p>COUNTRY currency: <span id="currency"></span></p>
+    <p>COUNTRY phonecode: <span id="phonecode"></span></p>
+    <p>COUNTRY region: <span id="region"></span></p>
+    <p>COUNTRY city: <span id="city"></span></p>
+    <p>LONGITUDE: <span id="long"></span></p>
+    <p>LATITUDE: <span id="lat"></span></p>
+  </div>
+
+  <script>
+    const input = document.getElementById("ipAddress");
+    const code = document.getElementById("code");
+    const name = document.getElementById("name");
+    const countrycode = document.getElementById("countrycode");
+    const countryname = document.getElementById("countryname");
+    const countrycapital = document.getElementById("countrycapital");
+    const currency = document.getElementById("currency");
+    const phonecode = document.getElementById("phonecode");
+    const region = document.getElementById("region");
+    const city = document.getElementById("city");
+    const long = document.getElementById("long");
+    const lat = document.getElementById("lat");
+
+    async function vamsi() {
+      try {
+        const inputvalue= input.value;
+        console.log(inputvalue);
+
+        const url = 'https://ip-location5.p.rapidapi.com/get_geo_info';
+        const options = {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'X-RapidAPI-Key': 'a5ed3364admsh0c8f5cc85d7ee27p1ce373jsn32ee1f4309b6',
+            'X-RapidAPI-Host': 'ip-location5.p.rapidapi.com'
+          },
+          body: new URLSearchParams({ip: `${inputvalue}`})
+        };
+        
+        
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          throw new error("Enter correct IP address");
+        }
+        const data = await response.json();
+        console.log(data);
+
+        code.textContent = data.continent.code;
+        name.textContent = data.continent.name;
+        countrycode.textContent=data.country.code
+        countryname.textContent=data.country.name
+        countrycapital.textContent=data.country.capital;
+        currency.textContent=data.country.currency;
+        region.textContent=data.region;
+        long.textContent=data.longitude;
+        lat.textContent=data.latitude;
+        city.textContent=data.city;
+        phonecode.textContent=data.country.phone-code;
+
+        
+
+
+      } catch (error) {
+        console.error(error);
+        alert("Please enter a valid IP address or check your API key.");
+      }
+    }
+  </script>
+</body>
+</html>
+
